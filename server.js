@@ -58,7 +58,7 @@ app.post("/api/user/register", (req,res)=>{
 
 app.post("/api/user/login", (req, res) => {
     userService.checkUser(req.body)
-    .then((msg) => {
+    .then((user) => {
             let payload = { 
                 _id: user._id,
                 userName: user.userName
