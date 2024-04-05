@@ -48,24 +48,23 @@ app.use(express.json());
 app.use(cors());
 app.use(passport.initialize());
 
-app.post("/api/user/register", (req, res) => {
-    userService.registerUser(req.body)
-    .then((msg) => {
-        let payload = { 
-            _id: user._id,
-            userName: user.userName
-        };
-        
-        let token = jwt.sign(payload, jwtOptions.secretOrKey);
-        res.json({ "message": msg, "token": token });
-    }).catch((msg) => {
-        res.status(422).json({ "message": msg });
+app.post("/api/register", (req,res)=>{
+    userService.registerUser(req.body).then(msg=>{
+        res.json({message: msg});
+    }).catch(msg=>{
+        res.status(422).json({message: msg});
     });
 });
 
 app.post("/api/user/login", (req, res) => {
     userService.checkUser(req.body)
-    .then((user) => {
+    .then((msg) => {
+            let payload = { 
+                _id: user._id,
+                userName: user.userName
+            };
+            
+            let token = jwt.sign(payload, jwtOptions.secretOrKey);
         res.json({ "message": "login successful"});
     }).catch(msg => {
         res.status(422).json({ "message": msg });
